@@ -13,7 +13,7 @@ Number.prototype.clamp = function(min, max) {
 
 class World{
 
-    constructor(backgroundColor = new Color(0,0,0))
+    constructor(backgroundColor = new Color(255,255,255))
     {
         this.backgroundColor = backgroundColor;
         this.pixels = [];
