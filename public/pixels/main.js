@@ -56,10 +56,10 @@ class World{
     }
 
 }
-const MIN_LENGTH = 5;
+const MIN_LENGTH = 10;
 
 class Pixel{
-    constructor(newX, newY, newColor, newLength, oldPixel, animationLength = 1000)
+    constructor(newX, newY, newLength, oldPixel, newColor = undefined, animationLength = 1000)
     {
         this.x = newX;
         this.y = newY;
@@ -68,7 +68,10 @@ class Pixel{
         this.creationTime = new Date();
         this.oldPixel = oldPixel;
         this.animationLength = animationLength
-        this.color = getColorFromPicture(this.x - 25, this.y - 25, this.length, this.length);
+        if(newColor == undefined)
+            this.color = getColorFromPicture(this.x, this.y, this.length, this.length);
+        else
+            this.color = newColor;
     }
 
     draw(currentTime)
@@ -87,10 +90,12 @@ class Pixel{
             y = tween(this.oldPixel.y , y, ratio);
             length = tween(this.oldPixel.length , length, ratio);
             color = this.color.tween(this.oldPixel.color, ratio);
+            console.log(color);
 
         }
         ctx.beginPath();
         ctx.fillStyle = color.toString();
+        ctx.strokeStyle= "rbg(0,0,0)"
         ctx.rect(x, y, length, length);
         ctx.fill();
 
@@ -104,27 +109,27 @@ class Pixel{
 
     split()
     {
-        var gap = 1;
+        var gap = 0;
         var newPixels = [];
         var startLength = this.length/2;
-        var endLength = this.length/2 - gap
+        var endLength = startLength;
         if(endLength > 0)
         {
             // upper left
-            var transitionPixel = new Pixel(this.x, this.y, this.color, startLength)
-            newPixels.push(new Pixel(this.x, this.y, this.color.randomColor(50), endLength, transitionPixel));
+            var transitionPixel = new Pixel(this.x, this.y, startLength, undefined, this.color)
+            newPixels.push(new Pixel(this.x, this.y, endLength, transitionPixel));
 
             // upper right
-            transitionPixel = new Pixel(this.x + startLength, this.y, this.color, startLength);
-            newPixels.push(new Pixel(this.x + startLength+gap, this.y, this.color.randomColor(50), endLength, transitionPixel));
+            transitionPixel = new Pixel(this.x + startLength, this.y, startLength, undefined, this.color);
+            newPixels.push(new Pixel(this.x + startLength+gap, this.y, endLength, transitionPixel));
 
             // lower left
-            transitionPixel = new Pixel(this.x, this.y + startLength, this.color, startLength)
-            newPixels.push(new Pixel(this.x, this.y+ startLength+ gap, this.color.randomColor(50), endLength, transitionPixel));
+            transitionPixel = new Pixel(this.x, this.y + startLength, startLength, undefined, this.color)
+            newPixels.push(new Pixel(this.x, this.y+ startLength+ gap, endLength, transitionPixel));
 
             // // lower right
-            transitionPixel = new Pixel(this.x + startLength, this.y + startLength, this.color, startLength)
-            newPixels.push(new Pixel(this.x + startLength + gap, this.y + startLength + gap, this.color.randomColor(50), endLength, transitionPixel));
+            transitionPixel = new Pixel(this.x + startLength, this.y + startLength, startLength, undefined, this.color)
+            newPixels.push(new Pixel(this.x + startLength + gap, this.y + startLength + gap, endLength, transitionPixel));
         }
 
         return newPixels;
@@ -136,7 +141,7 @@ class Pixel{
         return (x > this.x && x < this.x+this.length &&
            y > this.y && y < this.y+this.length &&
            !(animationTween < this.animationLength && this.oldPixel != undefined) &&
-           this.length/2 - 1 > MIN_LENGTH );
+           this.length/2 - 0 > MIN_LENGTH );
     }
 
 }
@@ -226,7 +231,7 @@ function initCanvas() {
 
 
     world = new World();
-    world.addPixel(new Pixel(25, 25 ,new Color(255,255,255), imageWidth));
+    world.addPixel(new Pixel(0, 0 , imageWidth));
 
     world.draw();
 
@@ -247,7 +252,7 @@ function initPicture()
         //draw background image
         pictureCtx.drawImage(img1, 0, 0);
 
-        var data = pictureCtx.getImageData(100, 100, 4, 4).data;
+        //var data = pictureCtx.getImageData(100, 100, 4, 4).data;
 
         initCanvas();
 
