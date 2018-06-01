@@ -246,7 +246,7 @@ function initPicture()
     url_string = window.location.href;
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
-    if(c != null)
+    if(id != null)
     {
         loadCanvas('https://i.imgur.com/'+id+".png");
     }
