@@ -1,0 +1,6 @@
+{
+  "manifest_version": 1,
+  "name": "pixels",
+  "version": "1",
+  "permissions": ["https://i.imgur.com/*"],
+}

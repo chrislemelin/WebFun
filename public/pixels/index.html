@@ -5,7 +5,9 @@
         <meta charset="utf-8">
 
         <link rel="stylesheet" href="./style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="./main.js"></script>
+        <link rel="manifest" href="manifest.json">
 
         <title>
         pixels
@@ -13,12 +15,24 @@
     </head>
 
     <body>
+        <div class="background"/>
+
         <div>
             <canvas id="canvas"/>
+
         </div>
         <div>
-            <canvas id="picture" style="z-index: -10; position: relative;"/>
+            <h3 class="bottomStuff"> make your own!!! </h3>
+            <input class="bottomStuff" type='file' id="upload" />
+            </br><img class="bottomStuff" id="myImg" src="#" alt="your image" height=200 />
+            </br>
+            <div class="bottomStuff" id="displayText">
+            </div>
+            <input class="bottomStuff" type="button" value="generate link" id="send"/>
         </div>
+
+        <canvas id="picture" style="z-index: -10; position: absolute; display:none;"/>
+
     </body>
 
 </html>

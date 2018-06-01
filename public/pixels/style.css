@@ -1,11 +1,26 @@
 canvas {
-    position: fixed;
     height: 100%;
     width: 100%;
-    z-index: -1;
     background-color: white;
+}
+
+.background{
+    height: calc(100% - 200px);
+    width: 100%;
+    background-color: white;
+
+}
+
+.pictureCanvas{
+    position: absolute;
+    z-index: -10;
+    display: none;
 }
 
 body{
     margin:0;
+}
+
+.bottomStuff{
+    margin: 10px;
 }

@@ -56,10 +56,10 @@ class World{
     }
 
 }
-const MIN_LENGTH = 10;
+const MIN_LENGTH = 5;
 
 class Pixel{
-    constructor(newX, newY, newLength, oldPixel, newColor = undefined, animationLength = 1000)
+    constructor(newX, newY, newLength, oldPixel, newColor = undefined, animationLength = 500)
     {
         this.x = newX;
         this.y = newY;
@@ -90,7 +90,6 @@ class Pixel{
             y = tween(this.oldPixel.y , y, ratio);
             length = tween(this.oldPixel.length , length, ratio);
             color = this.color.tween(this.oldPixel.color, ratio);
-            console.log(color);
 
         }
         ctx.beginPath();
@@ -226,8 +225,10 @@ function getColorFromPicture(x, y, xLength, yLength)
 function initCanvas() {
     canvas  = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    width = canvas.height= imageWidth;
+    height = canvas.width = canvas.style.height =imageHeight;
+    canvas.style.width =imageWidth+"px";
+    canvas.style.height = imageHeight+"px";
 
 
     world = new World();
@@ -239,15 +240,33 @@ function initCanvas() {
 
 function initPicture()
 {
+    url_string = window.location.href;
+    var url = new URL(url_string);
+    var c = url.searchParams.get("id");
+    console.log(c);
+    if(c != null)
+    {
+        loadCanvas('https://i.imgur.com/'+c+".png");
+    }
+    else {
+        loadCanvas('https://i.imgur.com/MGphLLc.jpg');
+    }
+}
+
+function loadCanvas(url)
+{
     var pixelCanvas = document.getElementById('picture');
     //pictureCtx = document.getElementById('picture').getContext('2d');
 
     var img1 = new Image();
+    img1.crossOrigin = "Anonymous";
+
 
     //drawing of the test image - img1
     img1.onload = function () {
-        pixelCanvas.width = imageWidth = img1.width;
-        pixelCanvas.height = imageHeight = img1.height;
+
+        pixelCanvas.width = imageWidth =  Math.min(img1.width, 1000);
+        pixelCanvas.height = imageHeight = Math.min(img1.height, 1000);
 
         //draw background image
         pictureCtx.drawImage(img1, 0, 0);
@@ -258,11 +277,8 @@ function initPicture()
 
     };
 
-    img1.src = 'smilelaugh.jpg';
-
-    //var data = context.getImageData(200, 200, 1, 1).data;
+    img1.src = url
 }
-
 
 
 window.onresize = function() {
@@ -274,15 +290,76 @@ window.onresize = function() {
 
 function handleMouseMove(event)
 {
-    world.handleMouseMove(event.clientX, event.clientY);
+    var rect = canvas.getBoundingClientRect();
+
+    world.handleMouseMove(event.clientX - rect.left, event.clientY - rect.top);
 }
 
 function init() {
     pictureCtx = document.getElementById('picture').getContext('2d');
     initPicture();
+    initCallbacks();
+    localStorage.dataBase64="";
 
-    document.body.addEventListener("mousemove",handleMouseMove);
+
 }
+
+function imgurUpload() {
+    var applicationId = '2ab48d8265ee7ba';
+    var auth = 'Client-ID ' + applicationId;
+
+    $.ajax({
+      url: 'https://api.imgur.com/3/image',
+      type: 'POST',
+      headers: {
+        Authorization: auth,
+        Accept: 'application/json'
+      },
+      data: {
+        image: localStorage.dataBase64,
+        type: 'base64'
+      },
+      success: function(result) {
+          var link ="https://chrislemelin.gitlab.io/WebFun/pixels?id="+result.data.id;
+          $("#displayText").html("Success: copy this <a href="+link+">"+link+"</a>");
+
+        },
+      error: function(result) {
+          $("#displayText").html("that file is wack");
+      }
+
+    });
+  }
+
+
+
+
+function imageIsLoaded(e) {
+
+    $('#myImg').attr('src', e.target.result);
+    localStorage.dataBase64 = e.target.result.substring(22);
+};
+
+
+function initCallbacks()
+{
+    $(":file").change(function () {
+
+           if (this.files && this.files[0]) {
+               var reader = new FileReader();
+
+               reader.onload = imageIsLoaded;
+               reader.readAsDataURL(this.files[0]);
+           }
+       });
+    $("#send").click(imgurUpload);
+    document.body.addEventListener("mousemove",handleMouseMove);
+
+
+}
+
+
+
 
 
 window.onload = init;
