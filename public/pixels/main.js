@@ -261,14 +261,14 @@ function loadCanvas(url)
     var pixelCanvas = document.getElementById('picture');
 
     var img = new Image();
-    img1.crossOrigin = "Anonymous";
+    img.crossOrigin = "Anonymous";
 
 
     //drawing of the test image - img1
-    img1.onload = function () {
+    img.onload = function () {
 
-        pixelCanvas.width = imageWidth =  Math.min(img1.width, MAX_PIXELS);
-        pixelCanvas.height = imageHeight = Math.min(img1.height, MAX_PIXELS);
+        pixelCanvas.width = imageWidth =  Math.min(img.width, MAX_PIXELS);
+        pixelCanvas.height = imageHeight = Math.min(img.height, MAX_PIXELS);
 
         //draw background image
         pictureCtx.drawImage(img, 0, 0);
@@ -279,7 +279,7 @@ function loadCanvas(url)
 
     };
 
-    img1.src = url
+    img.src = url
 }
 
 
