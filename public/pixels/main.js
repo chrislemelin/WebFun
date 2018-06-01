@@ -10,7 +10,9 @@ Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
 
-MAX_PIXELS=1000;
+const MAX_PIXELS= 1000;
+const MIN_PIXEL_LENGTH = 10;
+
 
 
 class World{
@@ -58,7 +60,6 @@ class World{
     }
 
 }
-const MIN_LENGTH = 5;
 
 class Pixel{
     constructor(newX, newY, newLength, oldPixel, newColor = undefined, animationLength = 500)
@@ -139,10 +140,10 @@ class Pixel{
     shoudSplit(x,y, currentTime){
         var animationTween = (currentTime - this.creationTime);
 
-        return (x > this.x && x < this.x+this.length &&
+        return (x > this.x && x < (this.x+this.length) &&
            y > this.y && y < this.y+this.length &&
            !(animationTween < this.animationLength && this.oldPixel != undefined) &&
-           this.length/2 - 0 > MIN_LENGTH );
+           this.length/2 > MIN_PIXEL_LENGTH );
     }
 
 }
@@ -180,7 +181,6 @@ class Color{
         )
     }
 }
-
 /// graphics helper functions
 function tween(num1, num2, ratio)
 {
@@ -201,6 +201,7 @@ function getColorFromPicture(x, y, xLength, yLength)
     var counter = 0;
     for(var a = 0; a < numberOfPixels; a++)
     {
+
         var i = a*4;
         if(data[i] != undefined)
             r+=data[i];
@@ -214,12 +215,17 @@ function getColorFromPicture(x, y, xLength, yLength)
             counter++;
 
 
+
     }
     r /= counter;
     b /= counter;
     g /= counter;
 
     var returnColor = new Color(r, g, b);
+    if(counter ===0 )
+    {
+        returnColor = newColor(255,255,255);
+    }
 
     return returnColor;
 
@@ -267,19 +273,90 @@ function loadCanvas(url)
     //drawing of the test image - img1
     img.onload = function () {
 
-        pixelCanvas.width = imageWidth =  Math.min(img.width, MAX_PIXELS);
-        pixelCanvas.height = imageHeight = Math.min(img.height, MAX_PIXELS);
+        imageWidth = Math.min(img.width, MAX_PIXELS);
+        imageHeight = Math.min(img.height, MAX_PIXELS);
 
+        imageWidth = Math.max(imageWidth, imageHeight);
+        imageHeight = imageWidth;
+
+        pixelCanvas.width = imageWidth;
+        pixelCanvas.height = imageHeight;
         //draw background image
+
+        var compositeOperation = pictureCtx.globalCompositeOperation;
+
+
+
+
         pictureCtx.drawImage(img, 0, 0);
 
-        //var data = pictureCtx.getImageData(100, 100, 4, 4).data;
 
+        //set to draw behind current content
+        pictureCtx.globalCompositeOperation = "destination-over";
+
+        pictureCtx.fillStyle = "rgb(255,255,255)";
+        pictureCtx.fillRect(0, 0, imageWidth, imageHeight );
+
+
+
+        pictureCtx.globalCompositeOperation = compositeOperation;
+
+
+
+
+        //var data = pictureCtx.getImageData(100, 100, 4, 4).data;
+        //canvasToImage(pixelCanvas, pictureCtx, "rbg(255,255,255)")
         initCanvas();
 
     };
 
     img.src = url
+}
+
+function canvasToImage(canvas, context, backgroundColor)
+{
+	//cache height and width
+	var w = canvas.width;
+	var h = canvas.height;
+
+
+	var data;
+
+	if(backgroundColor)
+	{
+		//get the current ImageData for the canvas.
+		data = context.getImageData(0, 0, w, h);
+
+		//store the current globalCompositeOperation
+		var compositeOperation = context.globalCompositeOperation;
+
+		//set to draw behind current content
+		context.globalCompositeOperation = "destination-over";
+
+		//set background color
+		context.fillStyle = backgroundColor;
+
+		//draw background / rect on entire canvas
+		context.fillRect(0,0,w,h);
+	}
+
+	//get the image data from the canvas
+	var imageData = this.canvas.toDataURL("image/png");
+
+	if(backgroundColor)
+	{
+		//clear the canvas
+		context.clearRect (0,0,w,h);
+
+		//restore it with original / cached ImageData
+		context.putImageData(data, 0,0);
+
+		//reset the globalCompositeOperation to what it was
+		context.globalCompositeOperation = compositeOperation;
+	}
+
+	//return the Base64 encoded data url string
+	return imageData;
 }
 
 
@@ -338,8 +415,8 @@ function initCallbacks()
 
 
 window.onresize = function() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    width = canvas.width = imageWidth;
+    height = canvas.height = imageHeight;
 
     world.draw();
 }
