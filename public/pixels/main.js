@@ -406,7 +406,10 @@ function initCallbacks()
            }
        });
     $("#send").click(getResizedImage);
-    document.body.addEventListener("mousemove",handleMouseMove);
+    //document.body.addEventListener("mousemove",handleMouseMove);
+    document.body.addEventListener("touchstart", handleMouseMove, false);
+    document.body.addEventListener("touchmove", handleMouseMove, false);
+
 
 
 }
@@ -426,6 +429,8 @@ function handleMouseMove(event)
 
     world.handleMouseMove(event.clientX - rect.left, event.clientY - rect.top);
 }
+
+
 
 function init() {
 
