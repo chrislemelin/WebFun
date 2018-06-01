@@ -181,6 +181,7 @@ class Color{
         )
     }
 }
+
 /// graphics helper functions
 function tween(num1, num2, ratio)
 {
@@ -264,7 +265,9 @@ function initPicture()
 
 function loadCanvas(url)
 {
-    var pixelCanvas = document.getElementById('picture');
+    var pictureCanvas = document.getElementById('picture');
+    pictureCtx = pictureCanvas.getContext('2d');
+
 
     var img = new Image();
     img.crossOrigin = "Anonymous";
@@ -279,12 +282,11 @@ function loadCanvas(url)
         imageWidth = Math.max(imageWidth, imageHeight);
         imageHeight = imageWidth;
 
-        pixelCanvas.width = imageWidth;
-        pixelCanvas.height = imageHeight;
+        pictureCanvas.width = imageWidth;
+        pictureCanvas.height = imageHeight;
         //draw background image
 
         var compositeOperation = pictureCtx.globalCompositeOperation;
-
 
 
 
@@ -301,11 +303,6 @@ function loadCanvas(url)
 
         pictureCtx.globalCompositeOperation = compositeOperation;
 
-
-
-
-        //var data = pictureCtx.getImageData(100, 100, 4, 4).data;
-        //canvasToImage(pixelCanvas, pictureCtx, "rbg(255,255,255)")
         initCanvas();
 
     };
@@ -313,56 +310,12 @@ function loadCanvas(url)
     img.src = url
 }
 
-function canvasToImage(canvas, context, backgroundColor)
-{
-	//cache height and width
-	var w = canvas.width;
-	var h = canvas.height;
 
 
-	var data;
-
-	if(backgroundColor)
-	{
-		//get the current ImageData for the canvas.
-		data = context.getImageData(0, 0, w, h);
-
-		//store the current globalCompositeOperation
-		var compositeOperation = context.globalCompositeOperation;
-
-		//set to draw behind current content
-		context.globalCompositeOperation = "destination-over";
-
-		//set background color
-		context.fillStyle = backgroundColor;
-
-		//draw background / rect on entire canvas
-		context.fillRect(0,0,w,h);
-	}
-
-	//get the image data from the canvas
-	var imageData = this.canvas.toDataURL("image/png");
-
-	if(backgroundColor)
-	{
-		//clear the canvas
-		context.clearRect (0,0,w,h);
-
-		//restore it with original / cached ImageData
-		context.putImageData(data, 0,0);
-
-		//reset the globalCompositeOperation to what it was
-		context.globalCompositeOperation = compositeOperation;
-	}
-
-	//return the Base64 encoded data url string
-	return imageData;
-}
-
-
-function imgurUpload() {
+function imgurUpload(data) {
     var applicationId = '2ab48d8265ee7ba';
     var auth = 'Client-ID ' + applicationId;
+
 
     $.ajax({
       url: 'https://api.imgur.com/3/image',
@@ -372,7 +325,7 @@ function imgurUpload() {
         Accept: 'application/json'
       },
       data: {
-        image: localStorage.dataBase64,
+        image: data.substring(22),
         type: 'base64'
       },
       success: function(result) {
@@ -381,17 +334,63 @@ function imgurUpload() {
 
         },
       error: function(result) {
-          $("#displayText").html("that file is wack");
+          $("#displayText").html("Fail: that file is wack");
       }
 
     });
-  }
+}
+
+function getResizedImage()
+{
+    if(localStorage.dataBase64 != "")
+    {
+        var loadPictureCanvas = document.getElementById('loadPicture');
+        var loadPictureCtx = loadPictureCanvas.getContext('2d');
+
+        var image = new Image();
+        image.onload = function() {
+
+            var resizedWidth = image.width;
+            var resizedHeight = image.height;
+
+            if(resizedWidth > resizedHeight)
+            {
+                if(resizedWidth > MAX_PIXELS)
+                {
+                    mult = MAX_PIXELS/resizedWidth;
+                    resizedWidth = MAX_PIXELS;
+                    resizedHeight = resizedHeight * mult;
+                }
+            }
+            else {
+                if(resizedHeight > MAX_PIXELS)
+                {
+                    mult = MAX_PIXELS/resizedHeight;
+                    resizedHeight = MAX_PIXELS;
+                    resizedWidth = resizedWidth * mult;
+                }
+
+            }
+
+            loadPictureCanvas.width = resizedWidth;
+            loadPictureCanvas.height = resizedHeight;
+
+            loadPictureCtx.drawImage(image, 0, 0, resizedWidth, resizedHeight);
+            imgurUpload(loadPictureCanvas.toDataURL("image/png"))
+        };
+        image.src = localStorage.dataBase64;
+
+
+
+    }
+    return "";
+}
 
 
 function imageIsLoaded(e) {
 
     $('#myImg').attr('src', e.target.result);
-    localStorage.dataBase64 = e.target.result.substring(22);
+    localStorage.dataBase64 = e.target.result;
 };
 
 
@@ -406,7 +405,7 @@ function initCallbacks()
                reader.readAsDataURL(this.files[0]);
            }
        });
-    $("#send").click(imgurUpload);
+    $("#send").click(getResizedImage);
     document.body.addEventListener("mousemove",handleMouseMove);
 
 
@@ -429,7 +428,7 @@ function handleMouseMove(event)
 }
 
 function init() {
-    pictureCtx = document.getElementById('picture').getContext('2d');
+
     initPicture();
     initCallbacks();
     localStorage.dataBase64="";
