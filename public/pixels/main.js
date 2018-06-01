@@ -10,7 +10,7 @@ Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
 
-const MAX_PIXELS= 1000;
+const MAX_PIXELS= 800;
 const MIN_PIXEL_LENGTH = 10;
 
 

@@ -23,16 +23,25 @@
         </div>
         <div>
             <h3 class="bottomStuff"> make your own!!! </h3>
-            <input class="bottomStuff" type='file' id="upload" />
-            </br><img class="bottomStuff" id="myImg" src="#" alt="your image" height=200 />
-            </br>
-            <div class="bottomStuff" id="displayText">
+            <div style='display:flex;'>
+                <input class="bottomStuff" type='file' id="upload" />
+                <input class="bottomStuff" type="button" value="generate link" id="send" />
+                <div class="bottomStuff" id="displayText">
+                </div>
             </div>
-            <input class="bottomStuff" type="button" value="generate link" id="send"/>
+            <br/>
+            <img class="bottomStuff" id="myImg" src="#" alt="your image" height=200 />
         </div>
 
-        <canvas id="picture" style="z-index: -10; position: absolute;"/>
 
+
+        <div>
+            <canvas id="picture" style="z-index: -10; position: absolute; display:none;"/>
+        </div>
+
+        <div>
+            <canvas id="loadPicture" style="z-index: -10; position: absolute; display:none;"/>
+        </div>
     </body>
 
 </html>
