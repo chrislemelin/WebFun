@@ -10,6 +10,8 @@ Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
 
+MAX_PIXELS=1000;
+
 
 class World{
 
@@ -179,6 +181,7 @@ class Color{
     }
 }
 
+/// graphics helper functions
 function tween(num1, num2, ratio)
 {
     var difference = num2 - num1;
@@ -242,13 +245,13 @@ function initPicture()
 {
     url_string = window.location.href;
     var url = new URL(url_string);
-    var c = url.searchParams.get("id");
-    console.log(c);
+    var id = url.searchParams.get("id");
     if(c != null)
     {
-        loadCanvas('https://i.imgur.com/'+c+".png");
+        loadCanvas('https://i.imgur.com/'+id+".png");
     }
     else {
+        //default
         loadCanvas('https://i.imgur.com/MGphLLc.jpg');
     }
 }
@@ -256,20 +259,19 @@ function initPicture()
 function loadCanvas(url)
 {
     var pixelCanvas = document.getElementById('picture');
-    //pictureCtx = document.getElementById('picture').getContext('2d');
 
-    var img1 = new Image();
+    var img = new Image();
     img1.crossOrigin = "Anonymous";
 
 
     //drawing of the test image - img1
     img1.onload = function () {
 
-        pixelCanvas.width = imageWidth =  Math.min(img1.width, 1000);
-        pixelCanvas.height = imageHeight = Math.min(img1.height, 1000);
+        pixelCanvas.width = imageWidth =  Math.min(img1.width, MAX_PIXELS);
+        pixelCanvas.height = imageHeight = Math.min(img1.height, MAX_PIXELS);
 
         //draw background image
-        pictureCtx.drawImage(img1, 0, 0);
+        pictureCtx.drawImage(img, 0, 0);
 
         //var data = pictureCtx.getImageData(100, 100, 4, 4).data;
 
@@ -280,29 +282,6 @@ function loadCanvas(url)
     img1.src = url
 }
 
-
-window.onresize = function() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-
-    world.draw();
-}
-
-function handleMouseMove(event)
-{
-    var rect = canvas.getBoundingClientRect();
-
-    world.handleMouseMove(event.clientX - rect.left, event.clientY - rect.top);
-}
-
-function init() {
-    pictureCtx = document.getElementById('picture').getContext('2d');
-    initPicture();
-    initCallbacks();
-    localStorage.dataBase64="";
-
-
-}
 
 function imgurUpload() {
     var applicationId = '2ab48d8265ee7ba';
@@ -320,7 +299,7 @@ function imgurUpload() {
         type: 'base64'
       },
       success: function(result) {
-          var link ="https://chrislemelin.gitlab.io/WebFun/pixels?id="+result.data.id;
+          var link ="https://chrislemelin.gitlab.io/WebFun/pixels/?id="+result.data.id;
           $("#displayText").html("Success: copy this <a href="+link+">"+link+"</a>");
 
         },
@@ -330,8 +309,6 @@ function imgurUpload() {
 
     });
   }
-
-
 
 
 function imageIsLoaded(e) {
@@ -360,6 +337,27 @@ function initCallbacks()
 
 
 
+window.onresize = function() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
 
+    world.draw();
+}
+
+function handleMouseMove(event)
+{
+    var rect = canvas.getBoundingClientRect();
+
+    world.handleMouseMove(event.clientX - rect.left, event.clientY - rect.top);
+}
+
+function init() {
+    pictureCtx = document.getElementById('picture').getContext('2d');
+    initPicture();
+    initCallbacks();
+    localStorage.dataBase64="";
+
+
+}
 
 window.onload = init;
