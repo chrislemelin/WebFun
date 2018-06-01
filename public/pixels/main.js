@@ -11,7 +11,7 @@ Number.prototype.clamp = function(min, max) {
 };
 
 const MAX_PIXELS= 800;
-const MIN_PIXEL_LENGTH = 10;
+const MIN_PIXEL_LENGTH = 5;
 
 
 

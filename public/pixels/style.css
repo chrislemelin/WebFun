@@ -22,3 +22,13 @@ body{
 .bottomStuff{
     margin: 10px;
 }
+
+.mobileWarning{
+    display: none;
+}
+
+@media (hover:none), (hover:on-demand) {
+    .mobileWarning{
+        display: block !important;
+    }
+}
