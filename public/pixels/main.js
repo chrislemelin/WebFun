@@ -406,9 +406,9 @@ function initCallbacks()
            }
        });
     $("#send").click(getResizedImage);
-    //document.body.addEventListener("mousemove",handleMouseMove);
-    document.body.addEventListener("touchstart", handleMouseMove, false);
-    document.body.addEventListener("touchmove", handleMouseMove, false);
+    document.body.addEventListener("mousemove",handleMouseMove);
+    document.body.addEventListener("touchstart", handleTouchMove, false);
+    document.body.addEventListener("touchmove", handleTouchMove, false);
 
 
 
@@ -426,8 +426,13 @@ window.onresize = function() {
 function handleMouseMove(event)
 {
     var rect = canvas.getBoundingClientRect();
-
     world.handleMouseMove(event.clientX - rect.left, event.clientY - rect.top);
+}
+
+function handleTouchMove(event)
+{
+    var rect = canvas.getBoundingClientRect();
+    world.handleMouseMove(event.touches[0].clientX - rect.left, event.touches[0].clientY - rect.top);
 }
 
 
