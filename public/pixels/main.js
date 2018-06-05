@@ -211,8 +211,16 @@ function goToRealRandomLink()
     },
       success: function(result)
       {
-          var randomID = result.data[0].id;
-          window.location.href = BASE_URL+"?id="+randomID;
+          var randomGallery = result.data[Math.floor(Math.random()*result.data.length)];
+          var randomPic;
+          if(randomGallery.images != undefined)
+          {
+              randomPic = randomGallery.images[Math.floor(Math.random()*randomGallery.images.length)].id
+          }
+          else {
+              randomPic = randomGallery.id;
+          }
+          window.location.href = BASE_URL+"?id="+randomPic;
         },
       error: function(result) {
           console.log("error: "+result)
