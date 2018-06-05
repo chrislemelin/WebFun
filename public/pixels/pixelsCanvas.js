@@ -30,6 +30,8 @@ class World{
 
     handleMouseMove(x,y)
     {
+        x = x/CANVAS_RATIO;
+        y = y/CANVAS_RATIO;
         var date = new Date()
         this.pixels.forEach(
             (pixel, index, object) => {if (pixel.shoudSplit(x,y,date)){
@@ -68,6 +70,7 @@ class Pixel{
         var x = this.x;
         var y = this.y;
         var length = this.length;
+
         var color = this.color;
 
         if(animationTween < this.animationLength && this.oldPixel != undefined)
@@ -91,7 +94,7 @@ class Pixel{
     {
         var gap = 0;
         var newPixels = [];
-        var startLength = this.length/2;
+        var startLength = Math.floor(this.length/2);
         var endLength = startLength;
         if(endLength > 0)
         {
@@ -221,10 +224,11 @@ function getColorFromPicture(x, y, xLength, yLength)
 function initCanvas() {
     canvas  = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
+
     width = canvas.height= imageWidth;
-    height = canvas.width = canvas.style.height =imageHeight;
-    canvas.style.width =imageWidth+"px";
-    canvas.style.height = imageHeight+"px";
+    height = canvas.width = imageHeight;
+    canvas.style.width = imageWidth*CANVAS_RATIO+"px";
+    canvas.style.height = imageHeight*CANVAS_RATIO+"px";
 
 
     world = new World();

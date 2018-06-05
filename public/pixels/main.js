@@ -10,14 +10,15 @@ Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
 
-const MAX_PIXELS= 800;
-const MIN_PIXEL_LENGTH = 5;
+const MAX_PIXELS= 1024;
+const MIN_PIXEL_LENGTH = 1;
 const RANDOM_CURATED_LINKS=['Bn7giN9', 'hIfYTfs', 'A4HN4zB', '0sPlzS9', 'BSEaAlt', 'QAeYhXB',
     'sHjLAYE', 'zZ8QJLf', 'ICHetCo', 'CWRAkgx', 'MP75LeW', 'CUHEsZQ', '2Lm80Bj',
     'yrtguvP', '71bnHwN']
 const BASE_URL = 'https://chrislemelin.gitlab.io/WebFun/pixels/'
 const DEFAULT_ID = 'MGphLLc';
 const IMGUR_API_KEY = '2ab48d8265ee7ba';
+const CANVAS_RATIO = .5;
 
 
 function initPicture()
