@@ -28,3 +28,7 @@ body{
         display: block !important;
     }
 }
+
+.button{
+    margin: 10px 0px;
+}

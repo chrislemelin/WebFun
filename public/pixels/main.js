@@ -12,7 +12,10 @@ Number.prototype.clamp = function(min, max) {
 
 const MAX_PIXELS= 800;
 const MIN_PIXEL_LENGTH = 5;
-
+const RANDOM_CURATED_LINKS=['Bn7giN9', 'hIfYTfs', 'A4HN4zB', '0sPlzS9', 'BSEaAlt', 'QAeYhXB',
+    'sHjLAYE', 'zZ8QJLf', 'ICHetCo', 'CWRAkgx', 'MP75LeW', 'CUHEsZQ', '2Lm80Bj',
+    'yrtguvP', '71bnHwN']
+const BASE_URL = 'https://chrislemelin.gitlab.io/WebFun/pixels/'
 
 
 class World{
@@ -101,12 +104,6 @@ class Pixel{
         ctx.rect(x, y, length, length);
         ctx.fill();
 
-    }
-
-    update(){
-
-
-        //gug do a thing
     }
 
     split()
@@ -231,7 +228,7 @@ function getColorFromPicture(x, y, xLength, yLength)
     g /= counter;
 
     var returnColor = new Color(r, g, b);
-    if(counter ===0 )
+    if(counter === 0 )
     {
         returnColor = new Color(255,255,255);
     }
@@ -337,7 +334,7 @@ function imgurUpload(data) {
         type: 'base64'
       },
       success: function(result) {
-          var link ="https://chrislemelin.gitlab.io/WebFun/pixels/?id="+result.data.id;
+          var link = BASE_URL+"?id="+result.data.id;
           $("#displayText").html("Success: copy this <a href="+link+">"+link+"</a>");
 
         },
@@ -414,9 +411,11 @@ function initCallbacks()
            }
        });
     $("#send").click(getResizedImage);
+    $("#randomCurated").click(goToRandomCuratedLink);
     document.body.addEventListener("mousemove",handleMouseMove);
     document.body.addEventListener("touchstart", handleTouchMove, false);
     document.body.addEventListener("touchmove", handleTouchMove, false);
+
 
 
 
@@ -443,6 +442,16 @@ function handleTouchMove(event)
     world.handleMouseMove(event.touches[0].clientX - rect.left, event.touches[0].clientY - rect.top);
 }
 
+function goToRandomCuratedLink()
+{
+    randomLink = RANDOM_CURATED_LINKS[Math.floor(Math.random()*RANDOM_CURATED_LINKS.length)];
+    window.location.href = BASE_URL+"?id="+randomLink;
+}
+
+function goToRealRandomLink()
+{
+
+}
 
 
 function init() {
@@ -450,8 +459,6 @@ function init() {
     initPicture();
     initCallbacks();
     localStorage.dataBase64="";
-
-
 }
 
 window.onload = init;
