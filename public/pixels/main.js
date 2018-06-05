@@ -159,7 +159,9 @@ class Color{
 
     toString()
     {
-        return 'rgba('+ this.r + ', ' + this.g + ', ' + this.b + ' ,'+this.a+')';
+        var returnString = 'rgba('+ Math.round(this.r) + ', ' + Math.round(this.g)
+         + ', ' + Math.round(this.b) + ' ,'+ Math.round(this.a) +')';
+        return returnString;
     }
 
     randomColor(range)
@@ -194,8 +196,14 @@ function randomColor()
     return new Color(Math.random()*255,Math.random()*255,Math.random()*255);
 }
 
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
 function getColorFromPicture(x, y, xLength, yLength)
 {
+    //return new Color(255,0,0);
     numberOfPixels = xLength * yLength;
     var r = 0, g = 0, b = 0;
     var data = pictureCtx.getImageData(x,y,xLength, yLength).data;
@@ -225,7 +233,7 @@ function getColorFromPicture(x, y, xLength, yLength)
     var returnColor = new Color(r, g, b);
     if(counter ===0 )
     {
-        returnColor = newColor(255,255,255);
+        returnColor = new Color(255,255,255);
     }
 
     return returnColor;
