@@ -31,4 +31,11 @@ body{
 
 .button{
     margin: 10px 0px;
+    height:25px;
+}
+
+.makeYourOwn{
+    margin: 0;
+    margin-top:20px;
+    margin-bottom:5px;
 }

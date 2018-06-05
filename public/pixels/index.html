@@ -6,6 +6,7 @@
 
         <link rel="stylesheet" href="./style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="./pixelsCanvas.js"></script>
         <script src="./main.js"></script>
         <link rel="manifest" href="manifest.json">
 
@@ -24,16 +25,20 @@
             <canvas id="canvas"/>
 
         </div>
+
+        <input id="randomCurated" type="button" class="button"value="go to a random curated picture" />
+        <input id="randomLink" type="button" class="button"value="go to a random picture" />
+
+
         <div>
-            <h3> make your own!!! </h3>
+            <h3 class="makeYourOwn"> Make your own by uploading an image and generating a link </h3>
             <div style='display:flex;'>
-                <input type='file' id="upload" />
-                <input type="button" style="height:25px;" value="generate link" id="send" />
+                <input type='file' id="upload" class="button"/>
+                <input type="button" class="button" value="generate link" id="send" />
                 <div id="displayText" style='margin-left:20px'>
                 </div>
             </div>
 
-            <input id="randomCurated" type="button" class="button" style="height:25px;" value="go to a random picture" />
 
             <br/>
             <img id="myImg" src="#" alt="" height=200 />
