@@ -1,12 +1,16 @@
-canvas {
-    background-color: white;
+@media (hover:none), (hover:on-demand) {
+    .mobileWarning{
+        display: block !important;
+    }
 }
 
-.background{
-    height: calc(100% - 200px);
-    width: 100%;
+canvas {
     background-color: white;
+    border: 3px solid black;
+}
 
+body{
+    margin: 20px;
 }
 
 .pictureCanvas{
@@ -15,19 +19,10 @@ canvas {
     display: none;
 }
 
-body{
-    margin: 20px;
-}
-
 .mobileWarning{
     display: none;
 }
 
-@media (hover:none), (hover:on-demand) {
-    .mobileWarning{
-        display: block !important;
-    }
-}
 
 .button{
     margin: 10px 0px;
@@ -38,4 +33,26 @@ body{
     margin: 0;
     margin-top:20px;
     margin-bottom:5px;
+}
+
+.flex{
+    display: flex;
+    flex-direction: column;
+}
+
+.center{
+    margin:auto;
+}
+
+.lemonLoading{
+
+    animation-name: squishing;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes squishing {
+    from {height: 23px;}
+    50% {height: 4px;}
+    to {height: 23px;}
 }

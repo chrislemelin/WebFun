@@ -79,6 +79,8 @@ function loadCanvas(url)
 
 function imgurUpload(data) {
     var auth = 'Client-ID ' + IMGUR_API_KEY;
+    $("#loading").css({"display":"initial"});
+    $("#displayText").html("");
 
     $.ajax({
       url: 'https://api.imgur.com/3/image',
@@ -94,10 +96,13 @@ function imgurUpload(data) {
       success: function(result) {
           var link = BASE_URL+"?id="+result.data.id;
           $("#displayText").html("Success: copy this <a href="+link+">"+link+"</a>");
+          $("#loading").css({"display":"none"});
 
         },
       error: function(result) {
           $("#displayText").html("Fail: that file is wack");
+          $("#loading").css({"display":"none"});
+
       }
 
     });
@@ -148,6 +153,7 @@ function resizeAndDraw(canvas, ctx, image)
 function imageIsLoaded(e) {
 
     $('#myImg').attr('src', e.target.result);
+    $('#myImg').height(200);
     loadedImage = e.target.result;
 };
 
@@ -155,14 +161,13 @@ function imageIsLoaded(e) {
 function initPage()
 {
     $(":file").change(function () {
+       if (this.files && this.files[0]) {
+           var reader = new FileReader();
+           reader.onload = imageIsLoaded;
+           reader.readAsDataURL(this.files[0]);
+       }
+   });
 
-           if (this.files && this.files[0]) {
-               var reader = new FileReader();
-
-               reader.onload = imageIsLoaded;
-               reader.readAsDataURL(this.files[0]);
-           }
-       });
     $("#send").click(resizedImage);
     $("#randomCurated").click(goToRandomCuratedLink);
     $("#randomLink").click(goToRealRandomLink);

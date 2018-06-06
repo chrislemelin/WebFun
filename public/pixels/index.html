@@ -19,32 +19,41 @@
         <h1 class="mobileWarning">
             This works way better on desktop, just so you know
         </h1>
-        <div class="background"/>
 
-        <div>
-            <canvas id="canvas"/>
-
+        <div class="flex">
+            <canvas id="canvas" class="center"></canvas>
         </div>
 
-        <input id="randomCurated" type="button" class="button"value="go to a random curated picture" />
-        <input id="randomLink" type="button" class="button"value="go to a random picture" />
+        <div class="flex" style="margin-top:10px; margin-bottom:20px;">
+            <div class="center">
+                <input id="randomCurated" type="button" class="button" value="go to a random curated picture" />
+                <input id="randomLink" type="button" class="button" style="margin-top:0;" value="go to a random picture" />
+            </div>
+        </div>
 
 
-        <div>
-            <h3 class="makeYourOwn"> Make your own by uploading an image and generating a link </h3>
-            <div style='display:flex;'>
+        <div class="flex">
+
+            <h3 class="makeYourOwn center"> Make your own by uploading an image and generating a link </h3>
+            <div style='display:flex;' class="center">
                 <input type='file' id="upload" class="button"/>
                 <input type="button" class="button" value="generate link" id="send" />
-                <div id="displayText" style='margin-left:20px'>
-                </div>
             </div>
 
+            <div id ="loading" class="center" style="display:none;position:relative;height:23px;">
+                <div style="float: left;margin-right: 10px;">
+                    Loading
+                </div>
+                <img style="" class="lemonLoading" src="./lemon.png">
+            </div>
+
+            <div id="displayText" class='center'></div>
 
             <br/>
-            <img id="myImg" src="#" alt="" height=200 />
+            <img id="myImg" src="#" alt=""  class="center" />
             <br/>
 
-            <div style='display:flex;'>
+            <div style='display:flex;' class="center">
                 <div style='margin-top:40px; margin-right:20px'>
                     made by:
                 </div>
