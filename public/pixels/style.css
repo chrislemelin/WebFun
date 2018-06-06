@@ -11,6 +11,7 @@ canvas {
 
 body{
     margin: 20px;
+    font-family: "Open Sans";
 }
 
 .pictureCanvas{
@@ -25,8 +26,28 @@ body{
 
 
 .button{
-    margin: 10px 0px;
-    height:25px;
+    margin: 10px 10px;
+    border: 1px solid transparent;
+
+    display: inline-block;
+    padding: 6px 12px;
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+
+    border-radius: 4px;
+
+    -webkit-appearance: button;
+}
+
+.button:hover{
+    animation-name: buttonHover;
+    animation-fill-mode: forwards;
+    animation-duration: .3s;
+}
+
+@keyframes buttonHover{
+    to {background-color: #ffffff;}
 }
 
 .makeYourOwn{
@@ -51,6 +72,9 @@ body{
     animation-iteration-count: infinite;
 }
 
+.upload{
+    margin: 10px 0px;
+}
 @keyframes squishing {
     from {height: 23px;}
     50% {height: 4px;}
