@@ -13,6 +13,8 @@ canvas {
 body{
     margin: 20px;
     font-family: "Open Sans";
+    background: #4a4949;
+    color: white;
 }
 
 .pictureCanvas{
