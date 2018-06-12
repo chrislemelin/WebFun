@@ -129,53 +129,9 @@ class Pixel{
 
 }
 
-class Color{
-    constructor(newR, newG, newB, newA = 255)
-    {
-        this.r = newR;
-        this.g = newG;
-        this.b = newB;
-        this.a = newA;
-    }
 
-    toString()
-    {
-        var returnString = 'rgba('+ Math.round(this.r) + ', ' + Math.round(this.g)
-         + ', ' + Math.round(this.b) + ' ,'+ Math.round(this.a) +')';
-        return returnString;
-    }
 
-    randomColor(range)
-    {
-        var col =  new Color(
-            (this.r + Math.random()*range - range/2).clamp(0,255),
-            (this.g + Math.random()*range - range/2).clamp(0,255),
-            (this.b + Math.random()*range - range/2).clamp(0,255)
-        )
-        return col;
-    }
 
-    tween(oldColor, ratio)
-    {
-        return new Color(
-            tween(oldColor.r, this.r, ratio),
-            tween(oldColor.g, this.g, ratio),
-            tween(oldColor.b, this.b, ratio)
-        )
-    }
-}
-
-/// graphics helper functions
-function tween(num1, num2, ratio)
-{
-    var difference = num2 - num1;
-    return (ratio * difference) + num1;
-}
-
-function randomColor()
-{
-    return new Color(Math.random()*255,Math.random()*255,Math.random()*255);
-}
 
 function componentToHex(c) {
     var hex = c.toString(16);
