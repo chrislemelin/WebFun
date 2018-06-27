@@ -45,7 +45,7 @@ class World{
 
 
         ctx.fillStyle = this.backgroundColor.toString();
-        fitTextOnCanvas("Hello this is a test", "verdana", height/2, width/10);
+        fitTextOnCanvas("Everyone ignores me", "verdana", height/2, width/10);
 
         this.orbs.forEach(
             (orb) => {
@@ -98,6 +98,7 @@ class Orb{
         this.radius = radius;
         this.tail = [this.position];
         this.echos = [];
+        this.collidedLast = [];
     }
 
     renderTailHelper(startPosition, currentDistance, index, tail)
@@ -209,15 +210,22 @@ class Orb{
     collide(orb)
     {
         if(orb.position.distance(this.position) < (this.radius + orb.radius)){
-            var collideDir = this.position.clone().subtract(orb.position);
-            //var collidePoint = this.position.clone().add(collideDir.multiply(this.radius));
-            var collideDir2 = orb.position.clone().subtract(this.position);
+            if( !this.collidedLast.includes(orb))
+            {
+                this.collidedLast.push(orb);
+                var collideDir = this.position.clone().subtract(orb.position);
+                var collideDir2 = orb.position.clone().subtract(this.position);
 
-            orb.bounce(collideDir.normalize());
-            this.bounce(collideDir2.normalize());
+                orb.bounce(collideDir.normalize());
+                this.bounce(collideDir2.normalize());
+            }
 
-
-
+        }
+        else if(this.collidedLast.length > 0 && this.collidedLast.includes(orb)) {
+            var index = this.collidedLast.indexOf(orb);
+            if (index > -1) {
+               this.collidedLast.splice(index, 1);
+            }
         }
     }
 
