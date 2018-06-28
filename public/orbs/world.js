@@ -64,7 +64,7 @@ class World{
             (orb) => {
                 orb.update(deltaTime)
                 orb.draw()
-                orb.drawText("I feel trapped", this.orbs.length);
+                orb.drawText("I can't control my emotions", this.orbs.length);
                 //this.lightPosition = orb.position;
             }
         )

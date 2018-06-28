@@ -54,7 +54,7 @@ function randomOrb(world, color)
 
 window.onresize = function() {
     width = canvas.width = window.innerWidth * CANVAS_RATIO;
-    height = canvas.height = window.innerHeight * CANV_RATIO;
+    height = canvas.height = window.innerHeight * CANVAS_RATIO;
 }
 
 function init() {

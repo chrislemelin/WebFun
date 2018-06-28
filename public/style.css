@@ -1,0 +1,39 @@
+.gallery-img{
+    width: 200px;
+
+}
+
+.gallery-container{
+    display: flex;
+}
+
+.gallery-img-container{
+    float: left;
+}
+
+.gallery-img-text{
+    text-align: center;
+    position: relative;
+    top: -50px;
+    transition: all 1s;
+    opacity: 0;
+}
+
+.gallery-img-container:hover .gallery-img-text{
+    opacity: 1!important;
+    top: 0px!important;
+}
+
+.gallery-link{
+    margin: 10px;
+    margin-bottom: 30px;
+}
+
+.header{
+    padding-left: 10px;
+}
+
+body{
+    padding: 20px;
+    font-family: "Open Sans";
+}
