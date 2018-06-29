@@ -4,7 +4,9 @@
 }
 
 .gallery-container{
-    display: flex;
+    display: flow-root;
+    width: fit-content;
+    margin: auto;
 }
 
 .gallery-img-container{
@@ -15,13 +17,13 @@
     text-align: center;
     position: relative;
     top: -50px;
-    transition: all 1s;
     opacity: 0;
+    transition: all 1s;
+    z-index: -1;
 }
 
 .gallery-img-container:hover .gallery-img-text{
     opacity: 1!important;
-    top: 0px!important;
 }
 
 .gallery-link{
@@ -31,7 +33,15 @@
 
 .header{
     padding-left: 10px;
+    text-align: center;
 }
+
+.title-span{
+    position: relative;
+    transition: top 1s;
+    top: 0;
+}
+
 
 body{
     padding: 20px;
